@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+
+    <style>
+       body{
+            background-color: MintCream ;  
+        }
+        
+    </style>
+     
+    
+  <title>Location</title>
+
+</head>
+
+<body onload="getloc()">
+    <div class="container">
+        
+        <div class="btn-group fixed-top flex-wrap button-container">
+            <a href="index.html" class="btn btn-dark btn-lg" >Home</a>
+            <a href="products.html" class="btn btn-dark btn-lg" >Products</a>
+            <a href="contact.html" class="btn btn-dark btn-lg" >Contact Us</a>
+            <a href="location.html" class="btn btn-info btn-lg" >Location</a>
+            <a href="extra.html" class="btn btn-dark btn-lg" >Extra</a>
+        </div>
+        
+        <h1 class="display-4 text-center text-warning mt-5 pt-5 mb-5">Your geolocation:</h1>
+        
+        <div class="row">
+    <div class="col-sm">
+        <p>Latitude : <span id="latitude"></span></p>
+        <p>Longitude : <span id="longitude"></span></p>
+        <p><span id="error"></span></p> 
+            </div>
+            <div class="col-sm">
+    <div class="embed-responsive embed-responsive-16by9">
+    <div id="mapid" class="embed-responsive-item" style="border: 1px solid black"></div>
+</div>
+    </div>
+        </div>
+    </div>
+    
+</body>
+    
+   
+        
+    <script>
+     function getloc() {
+	 
+	navigator.geolocation.getCurrentPosition(get_coords,if_error);
+	 
+	function get_coords(position)
+	{
+	latitude=position.coords.latitude;
+	longitude=position.coords.longitude;
+	 
+	 document.getElementById("latitude").innerHTML=latitude;
+     document.getElementById("longitude").innerHTML=longitude;
+        var mymap = L.map('mapid').setView([latitude, longitude], 13);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+	maxZoom: 18,
+	id: 'mapbox.streets',
+	accessToken: 'pk.eyJ1IjoiaGVsZW5lMDkzIiwiYSI6ImNrMmw4cDA4NDA0a2wzbnBobDQ2eWRwZGsifQ.qsUm-zcC8pOYlBfdgZWzQg'
+}).addTo(mymap);
+        var marker = L.marker([latitude, longitude]).addTo(mymap);
+	}
+	 
+	function if_error(err)
+	{
+	if(err.code==1){document.getElementById("error").innerHTML='User Denied';}
+	if(err.code==2){document.getElementById("error").innerHTML='Position unavailable';}
+	if(err.code==3){document.getElementById("error").innerHTML='Timeout';}
+	}
+	} 
+         
+	</script>
+ 
+
+</html>
